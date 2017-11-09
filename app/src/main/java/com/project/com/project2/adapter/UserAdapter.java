@@ -40,6 +40,10 @@ public class UserAdapter extends ArrayAdapter<User> {
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         convertView = LayoutInflater.from(context).inflate(resource, parent, false);
         TextView name_user = convertView.findViewById(R.id.name_user);
+        TextView email = convertView.findViewById(R.id.email);
+        if(email!=null){
+            email.setText(list.get(position).getEmail());
+        }
         ImageView btnDelete = convertView.findViewById(R.id.btndelete);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
