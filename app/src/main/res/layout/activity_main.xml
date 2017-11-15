@@ -135,7 +135,6 @@
                         android:layout_marginBottom="8dp"
                         android:layout_marginLeft="47dp"
                         android:layout_marginTop="8dp"
-                        android:checked="true"
                         android:text="Remember"
                         android:textColor="@color/colorWhite"
                         android:textSize="17dp"

@@ -27,7 +27,6 @@ public class DBSQLlite extends SQLiteOpenHelper {
     private static final String NUMBER = "number";
     private static final String ADDRESS = "address";
     private static final String SEX = "sex";
-
     private Context context;
 
     public DBSQLlite(Context context) {

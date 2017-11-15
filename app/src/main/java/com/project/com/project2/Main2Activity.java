@@ -1,10 +1,12 @@
 package com.project.com.project2;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,6 +33,7 @@ public class Main2Activity extends AppCompatActivity
     ListView listView;
     DBSQLlite dbsqLlite;
     UserAdapter userAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,20 +63,23 @@ public class Main2Activity extends AppCompatActivity
         showUser();
     }
 
-    private void anhXa(){
+    private void anhXa() {
         listView = (ListView) findViewById(R.id.list_view);
     }
-    private void deleteUser(int id){
+
+    private void deleteUser(int id) {
         dbsqLlite.deleteUser(id);
-        for(User user: list){
-            if(user.getId()==id){
+        for (User user : list) {
+            if (user.getId() == id) {
                 list.remove(user);
                 userAdapter.notifyDataSetChanged();
             }
         }
     }
+
     List<User> list;
-    private void showUser(){
+
+    private void showUser() {
         dbsqLlite = new DBSQLlite(this);
         list = dbsqLlite.getAllStudent();
         userAdapter = new UserAdapter(this, R.layout.row_user, list);
@@ -82,25 +88,17 @@ public class Main2Activity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==1 && resultCode==RESULT_OK){
+        if (requestCode == 1 && resultCode == RESULT_OK) {
             userAdapter.notifyDataSetChanged();
             Toast.makeText(this, "Ngon rau", Toast.LENGTH_LONG).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         userAdapter.notifyDataSetChanged();
-    }
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override
@@ -148,5 +146,31 @@ public class Main2Activity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Đóng ứng dụng?");
+        alertDialogBuilder
+                .setMessage("Bấm Có để thoát!")
+                .setCancelable(false)
+                .setPositiveButton("Có",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                moveTaskToBack(true);
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                                System.exit(1);
+                            }
+                        })
+
+                .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }
