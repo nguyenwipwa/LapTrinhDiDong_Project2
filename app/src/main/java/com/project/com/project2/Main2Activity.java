@@ -2,6 +2,7 @@ package com.project.com.project2;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -33,6 +34,7 @@ public class Main2Activity extends AppCompatActivity
     ListView listView;
     DBSQLlite dbsqLlite;
     UserAdapter userAdapter;
+    boolean toogle = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class Main2Activity extends AppCompatActivity
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        this.setTitle("List View");
         anhXa();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -61,20 +63,27 @@ public class Main2Activity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         showUser();
+//        xoayManHinh();
     }
 
     private void anhXa() {
         listView = (ListView) findViewById(R.id.list_view);
     }
 
-    private void deleteUser(int id) {
-        dbsqLlite.deleteUser(id);
-        for (User user : list) {
-            if (user.getId() == id) {
-                list.remove(user);
-                userAdapter.notifyDataSetChanged();
-            }
+    private void xoayManHinh() {
+        if (this.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE) {
+            showAlert("Xoay ngang");
+        }else{
+            showAlert("Xoay doc");
         }
+    }
+
+    private void showAlert(final String messeage) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(messeage);
+        builder1.setCancelable(true);
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
     List<User> list;
@@ -89,8 +98,12 @@ public class Main2Activity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            userAdapter.notifyDataSetChanged();
-            Toast.makeText(this, "Ngon rau", Toast.LENGTH_LONG).show();
+            dbsqLlite = new DBSQLlite(this);
+            list = dbsqLlite.getAllStudent();
+            userAdapter = new UserAdapter(this, R.layout.row_user, list);
+            listView.setAdapter(userAdapter);
+            Toast.makeText(this, userAdapter.getCount()+"", Toast.LENGTH_SHORT).show();;
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -116,7 +129,20 @@ public class Main2Activity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            dbsqLlite.deleteLogin();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.action_xoay) {
+            if (toogle) {
+                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE);
+                toogle = false;
+            } else {
+                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+                toogle = true;
+            }
             return true;
         }
 

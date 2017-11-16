@@ -1,10 +1,12 @@
 package com.project.com.project2.model;
 
+import java.io.Serializable;
+
 /**
  * Created by MyPC on 04/11/2017.
  */
 
-public class User {
+public class User implements Serializable{
     private int id;
     private String email;
     private String name;

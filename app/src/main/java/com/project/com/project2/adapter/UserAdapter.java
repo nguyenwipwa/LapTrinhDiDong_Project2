@@ -1,6 +1,8 @@
 package com.project.com.project2.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.com.project2.R;
+import com.project.com.project2.ShowUserActivity;
 import com.project.com.project2.database.DBSQLlite;
 import com.project.com.project2.model.User;
 
@@ -55,6 +58,17 @@ public class UserAdapter extends ArrayAdapter<User> {
             }
         });
         name_user.setText(list.get(position).getName());
+        showUser(convertView, list.get(position));
         return convertView;
+    }
+    private void showUser(View convertView, final User user){
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ShowUserActivity.class);
+                intent.putExtra("USER", user);
+                context.startActivity(intent);
+            }
+        });
     }
 }

@@ -28,6 +28,9 @@ public class DBSQLlite extends SQLiteOpenHelper {
     private static final String ADDRESS = "address";
     private static final String SEX = "sex";
     private Context context;
+    //    ----------Login
+    private static final String TABLE_LOGIN = "login";
+    private static final String ID_USER = "id_user";
 
     public DBSQLlite(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -45,12 +48,18 @@ public class DBSQLlite extends SQLiteOpenHelper {
                 ADDRESS + " TEXT," +
                 SEX + " TEXT)";
         db.execSQL(sqlQuery);
+
+        String sqlQueryLogin = "CREATE TABLE " + TABLE_LOGIN + " (" +
+                ID_USER + " INT," +
+                "FOREIGN KEY("+ID_USER+") REFERENCES "+ TABLE_NAME +"("+ID+ "))";
+        db.execSQL(sqlQueryLogin);
         Toast.makeText(context, "Create successfylly", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOGIN);
         onCreate(db);
         Toast.makeText(context, "Drop successfylly", Toast.LENGTH_SHORT).show();
     }
@@ -68,6 +77,35 @@ public class DBSQLlite extends SQLiteOpenHelper {
         long ma = db.insert(TABLE_NAME, null, values);
         db.close();
         return ma > 0;
+    }
+
+    public boolean addLogin(int id) {
+        deleteLogin();
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ID_USER, id);
+        long ma = db.insert(TABLE_LOGIN, null, values);
+        db.close();
+        return ma > 0;
+    }
+
+    public User getLogin() {
+        User user = null;
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT  tb.* FROM " + TABLE_NAME +" tb INNER JOIN " + TABLE_LOGIN +" tl ON tb.id = tl.id_user";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            user = new User();
+            user.setId(cursor.getInt(0));
+            user.setEmail(cursor.getString(1));
+            user.setName(cursor.getString(2));
+            user.setPassword(cursor.getString(3));
+            user.setNumber(cursor.getString(4));
+            user.setAddress(cursor.getString(5));
+        }
+        cursor.close();
+        db.close();
+        return user;
     }
 
     public List<User> getAllStudent() {
@@ -97,7 +135,7 @@ public class DBSQLlite extends SQLiteOpenHelper {
 
     public User getUser(String email, String password) {
         User user = null;
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE email='" + email + "' and password='" + password+"'";
+        String selectQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE email='" + email + "' and password='" + password + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -112,6 +150,11 @@ public class DBSQLlite extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return user;
+    }
+    public void deleteLogin(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM  " + TABLE_LOGIN);
+        db.close();
     }
 
     public void deleteUser(int id) {

@@ -30,12 +30,14 @@ import com.project.com.project2.model.User;
 import static android.provider.Telephony.Carriers.PASSWORD;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button btnCreate, btnLogin;
-    EditText ed_email, ed_password;
-    MyProgress myProgress;
-    DBSQLlite dbsqLlite;
-    CheckBox checkBox;
-
+    private Button btnCreate, btnLogin;
+    private EditText ed_email, ed_password;
+    private MyProgress myProgress;
+    private DBSQLlite dbsqLlite;
+    private CheckBox checkBox;
+    private static final String SPF_NAME = "vidslogin"; //  <--- Add this
+    private static final String USERNAME = "username";  //  <--- To save username
+    private static final String PASSWORD = "password";  //  <--- To save password
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +64,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Context.MODE_PRIVATE);
         ed_email.setText(loginPreferences.getString(USERNAME, ""));
         ed_password.setText(loginPreferences.getString(PASSWORD, ""));
+        if (login() != null) {
+            Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+            startActivity(intent);
+        }
     }
 
-    private static final String SPF_NAME = "vidslogin"; //  <--- Add this
-    private static final String USERNAME = "username";  //  <--- To save username
-    private static final String PASSWORD = "password";  //  <--- To save password
+    private void showAlert(final String messeage) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(messeage);
+        builder1.setCancelable(true);
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
+
+    public User login() {
+        return dbsqLlite.getLogin();
+    }
 
     public void save(String strUserName, String strPassword) {
         if (checkBox.isChecked()) {
@@ -96,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void login(String email, String password) {
         if (checklogin(email, password)) {
             save(email, password);
-//            dbsqLlite.addLogin(email, password);
+            dbsqLlite.addLogin(dbsqLlite.getUser(email, password).getId());
             myProgress = new MyProgress(this, "Loging...");
 //            myProgress.show();
 //            new Thread(new Runnable() {
@@ -124,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(MainActivity.this, Main2Activity.class);
             startActivity(intent);
         } else {
-            Toast.makeText(this, "Login fail!", Toast.LENGTH_LONG).show();
+            showAlert("Login fail!");
         }
     }
 
