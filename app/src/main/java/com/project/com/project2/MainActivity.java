@@ -104,9 +104,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setContentText(message)
                 .setContentInfo("REGISTER");
 
-
         Intent startMyActivity = new Intent(this, MainActivity.class);
-        PendingIntent myIntent = PendingIntent.getActivity(this, 1,startMyActivity, 0);
+        PendingIntent myIntent = PendingIntent.getActivity(this, 1, startMyActivity, 0);
         b.setContentIntent(myIntent);
 
         NotificationManager nm = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
