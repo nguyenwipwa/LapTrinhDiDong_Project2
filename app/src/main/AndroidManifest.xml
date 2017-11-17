@@ -20,9 +20,7 @@
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".RegisterActivity"
-             />
+        <activity android:name=".RegisterActivity" />
         <activity
             android:name=".ListViewActivity"
             android:parentActivityName=".MainActivity" />
