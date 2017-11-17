@@ -34,6 +34,7 @@ public class Main2Activity extends AppCompatActivity
     private UserAdapter userAdapter;
     private GridAdapter gridAdapter;
     private boolean toogle = true;
+    private List<User> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +71,6 @@ public class Main2Activity extends AppCompatActivity
     }
 
 
-    private void showAlert(final String messeage) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage(messeage);
-        builder1.setCancelable(true);
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-    }
-
-    List<User> list;
 
     private void showUser() {
         dbsqLlite = new DBSQLlite(this);

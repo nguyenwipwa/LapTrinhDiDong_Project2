@@ -32,7 +32,6 @@ import static android.provider.Telephony.Carriers.PASSWORD;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btnCreate, btnLogin;
     private EditText ed_email, ed_password;
-    private MyProgress myProgress;
     private DBSQLlite dbsqLlite;
     private CheckBox checkBox;
     private static final String SPF_NAME = "vidslogin"; //  <--- Add this
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setTicker("Register account completed!")
                 .setContentTitle(title)
                 .setContentText(message)
-                .setContentInfo("REGISTER");
+                .setContentInfo("PROJECT 2");
 
         Intent startMyActivity = new Intent(this, MainActivity.class);
         PendingIntent myIntent = PendingIntent.getActivity(this, 1, startMyActivity, 0);
