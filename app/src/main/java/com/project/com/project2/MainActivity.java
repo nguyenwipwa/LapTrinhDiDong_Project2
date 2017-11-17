@@ -104,6 +104,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setContentText(message)
                 .setContentInfo("REGISTER");
 
+
+        Intent startMyActivity = new Intent(this, MainActivity.class);
+        PendingIntent myIntent = PendingIntent.getActivity(this, 1,startMyActivity, 0);
+        b.setContentIntent(myIntent);
+
         NotificationManager nm = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(1, b.build());
     }
@@ -112,30 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (checklogin(email, password)) {
             save(email, password);
             dbsqLlite.addLogin(dbsqLlite.getUser(email, password).getId());
-            myProgress = new MyProgress(this, "Loging...");
-//            myProgress.show();
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    try {
-//                        this.wait(2000);
-
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    // do the thing that takes a long time
-//
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            myProgress.dismiss();
-//
-//
-//
-//                        }
-//                    });
-//                }
-//            }).start();
+//            myProgress = new MyProgress(this, "Loging...");
             Intent intent = new Intent(MainActivity.this, Main2Activity.class);
             startActivity(intent);
         } else {

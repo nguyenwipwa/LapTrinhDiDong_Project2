@@ -31,7 +31,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-
         anhXa();
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
@@ -104,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private String getSex() {
-        final String[] sex = {""};
+        final String[] sex = {"Male"};
         rd_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {

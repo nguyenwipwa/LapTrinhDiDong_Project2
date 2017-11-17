@@ -28,12 +28,12 @@ import java.util.List;
 
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    ListView listView;
-    GridView gridView;
-    DBSQLlite dbsqLlite;
-    UserAdapter userAdapter;
-    GridAdapter gridAdapter;
-    boolean toogle = true;
+    private ListView listView;
+    private GridView gridView;
+    private DBSQLlite dbsqLlite;
+    private UserAdapter userAdapter;
+    private GridAdapter gridAdapter;
+    private boolean toogle = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,6 @@ public class Main2Activity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         showUser();
-//        xoayManHinh();
     }
 
     private void anhXa() {
@@ -70,13 +69,6 @@ public class Main2Activity extends AppCompatActivity
         gridView = (GridView) findViewById(R.id.grid_view);
     }
 
-    private void xoayManHinh() {
-        if (this.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE) {
-            showAlert("Xoay ngang");
-        }else{
-            showAlert("Xoay doc");
-        }
-    }
 
     private void showAlert(final String messeage) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
@@ -104,8 +96,8 @@ public class Main2Activity extends AppCompatActivity
             list = dbsqLlite.getAllStudent();
             userAdapter = new UserAdapter(this, R.layout.row_user, list);
             listView.setAdapter(userAdapter);
-            Toast.makeText(this, userAdapter.getCount()+"", Toast.LENGTH_SHORT).show();;
-
+            gridAdapter = new GridAdapter(this, list);
+            gridView.setAdapter(gridAdapter);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
