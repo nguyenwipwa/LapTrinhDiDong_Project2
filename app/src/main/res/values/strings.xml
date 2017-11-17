@@ -8,5 +8,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="logout">Logout</string>
-    <string name="xoay">Xoay màn hinh</string>
+    <string name="xoay">Rotate the screen</string>
+    <string name="view_list">View List</string>
+    <string name="view_grid">View Matrix</string>
 </resources>

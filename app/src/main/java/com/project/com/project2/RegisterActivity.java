@@ -40,27 +40,28 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean check = true;
-                if(ed_name.length()==0){
+                if (ed_name.length() == 0) {
                     ed_name.requestFocus();
                     check = false;
                 }
-                if(ed_password.length()==0){
+                if (ed_password.length() == 0) {
                     ed_password.requestFocus();
                     check = false;
                 }
-                if(ed_email.length()==0){
+                if (ed_email.length() == 0) {
                     ed_email.requestFocus();
                     check = false;
                 }
-                if(!check){
+                if (!check) {
                     showError("Nhập đậy đủ thông tin");
-                } else
-                if (createUser())
+                } else if (createUser())
                     showAlert("Đăng kí thành công!", true);
+                else
                     showAlert("Đăng kí thất bại!", false);
             }
         });
     }
+
     private void showError(final String messeage) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage(messeage);

@@ -3,10 +3,8 @@ package com.project.com.project2;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,12 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.project.com.project2.adapter.GridAdapter;
 import com.project.com.project2.adapter.UserAdapter;
 import com.project.com.project2.database.DBSQLlite;
 import com.project.com.project2.model.User;
@@ -32,8 +29,10 @@ import java.util.List;
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     ListView listView;
+    GridView gridView;
     DBSQLlite dbsqLlite;
     UserAdapter userAdapter;
+    GridAdapter gridAdapter;
     boolean toogle = true;
 
     @Override
@@ -68,6 +67,7 @@ public class Main2Activity extends AppCompatActivity
 
     private void anhXa() {
         listView = (ListView) findViewById(R.id.list_view);
+        gridView = (GridView) findViewById(R.id.grid_view);
     }
 
     private void xoayManHinh() {
@@ -93,6 +93,8 @@ public class Main2Activity extends AppCompatActivity
         list = dbsqLlite.getAllStudent();
         userAdapter = new UserAdapter(this, R.layout.row_user, list);
         listView.setAdapter(userAdapter);
+        gridAdapter = new GridAdapter(this, list);
+        gridView.setAdapter(gridAdapter);
     }
 
     @Override
@@ -145,6 +147,16 @@ public class Main2Activity extends AppCompatActivity
             }
             return true;
         }
+        if (id == R.id.action_view_list) {
+            gridView.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            return true;
+        }
+        if (id == R.id.action_view_grid) {
+            gridView.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -156,6 +168,8 @@ public class Main2Activity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
+            Intent intent = new Intent(this, ListViewActivity.class);
+            startActivity(intent);
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
